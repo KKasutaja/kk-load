@@ -33,7 +33,7 @@ function checkWhitelist(id)
     local src = id
 
     if id then
-        MySQL.Async.fetchAll('SELECT COUNT(*) as count FROM player_whitelists WHERE identifier = @identifier', {
+        exports.oxmysql:fetch('SELECT COUNT(*) as count FROM player_whitelists WHERE identifier = @identifier', {
             ['@identifier'] = src
         }, function(result)
             if result[1] then
