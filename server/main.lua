@@ -1,9 +1,9 @@
 AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
-	deferrals.defer()
+    deferrals.defer()
 
-	local playerId, kickReason, identifier = source
+    local playerId, kickReason, identifier = source
 	
-	deferrals.update('Server: Palun oodake 5 sekundit.')
+    deferrals.update('Server: Palun oodake 5 sekundit.')
     Wait(1000)
     deferrals.update('Server: Palun oodake 4 sekundit.')
     Wait(1000)
@@ -12,21 +12,21 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
     deferrals.update('Server: Palun oodake 2 sekundit.')
     Wait(1000)
     deferrals.update('Server: Palun oodake 1 sekund.')
-	Wait(1000)
+    Wait(1000)
 
     identifier = GetPlayerIdentifiers(playerId)[1] or false
 
-	if not identifier then
-		kickReason = 'Viga: Teil ei tööta steam!'
-	elseif not checkWhitelist(identifier) then
-		kickReason = 'Viga: Te ei ole serveri whitelistis!'
-	end
+    if not identifier then
+	kickReason = 'Viga: Teil ei tööta steam!'
+    elseif not checkWhitelist(identifier) then
+	kickReason = 'Viga: Te ei ole serveri whitelistis!'
+    end
 
-	if kickReason then
-		deferrals.done(kickReason)
-	else
-		deferrals.done()
-	end
+    if kickReason then
+	deferrals.done(kickReason)
+    else
+	deferrals.done()
+    end
 end)
 
 function checkWhitelist(id)
