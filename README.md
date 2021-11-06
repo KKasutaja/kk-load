@@ -3,7 +3,7 @@
 * This is an allowlisting system for FiveM servers.
 
 * Requirements
-  * [mysql-async](https://github.com/brouznouf/fivem-mysql-async)
+  * [oxmysql](https://github.com/overextended/oxmysql)
 
 ## Installation
   * Drag 'kk-load' to your resources folder
