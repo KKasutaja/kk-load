@@ -33,16 +33,18 @@ function checkWhitelist(id)
     local src = id
 
     if id then
-        exports.oxmysql:fetch('SELECT COUNT(*) as count FROM player_whitelists WHERE identifier = @identifier', {
-            ['@identifier'] = src
-        }, function(result)
-            if result[1] then
-                if tonumber(result[1].count) > 0 then
-                    return true
-                else
-                    return false
-                end
-            end
-        end)
+	local result = exports.oxmysql:executeSync('SELECT * FROM player_whitelists WHERE identifier = @identifier', {
+	    ['@identifier'] = src
+	})
+		
+        if result[1] then
+            if result[1].identifier == src then
+		return true
+	    else
+		return false			
+	    end
+	else
+		return false
+        end
     end
 end
