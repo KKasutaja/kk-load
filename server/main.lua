@@ -3,29 +3,29 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
 
     local playerId, kickReason, identifier = source
 	
-    deferrals.update('Server: Palun oodake 5 sekundit.')
+    deferrals.update('Please wait 5 seconds.')
     Wait(1000)
-    deferrals.update('Server: Palun oodake 4 sekundit.')
+    deferrals.update('Please wait 4 seconds.')
     Wait(1000)
-    deferrals.update('Server: Palun oodake 3 sekundit.')
+    deferrals.update('Please wait 3 seconds.')
     Wait(1000)
-    deferrals.update('Server: Palun oodake 2 sekundit.')
+    deferrals.update('Please wait 2 seconds.')
     Wait(1000)
-    deferrals.update('Server: Palun oodake 1 sekund.')
+    deferrals.update('Please wait 1 second.')
     Wait(1000)
 
     identifier = GetPlayerIdentifiers(playerId)[1] or false
 
     if not identifier then
-	kickReason = 'Viga: Teil ei tööta steam!'
+	    kickReason = 'Steam must be running to join this server!'
     elseif not checkWhitelist(identifier) then
-	kickReason = 'Viga: Te ei ole serveri whitelistis!'
+	    kickReason = 'You must be allowlisted to join this server!'
     end
 
     if kickReason then
-	deferrals.done(kickReason)
+	    deferrals.done(kickReason)
     else
-	deferrals.done()
+	    deferrals.done()
     end
 end)
 
@@ -33,18 +33,18 @@ function checkWhitelist(id)
     local src = id
 
     if id then
-	local result = exports.oxmysql:executeSync('SELECT * FROM player_whitelists WHERE identifier = @identifier', {
-	    ['@identifier'] = src
-	})
+	    local result = exports.oxmysql:executeSync('SELECT * FROM player_whitelists WHERE identifier = @identifier', {
+	        ['@identifier'] = src
+	    })
 		
         if result[1] then
             if result[1].identifier == src then
-		return true
+		        return true
+	        else
+		        return false			
+	        end
 	    else
-		return false			
-	    end
-	else
-		return false
+		    return false
         end
     end
 end
