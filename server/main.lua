@@ -33,18 +33,18 @@ function checkWhitelist(id)
     local src = id
 
     if id then
-	    local result = exports.oxmysql:executeSync('SELECT * FROM player_whitelists WHERE identifier = @identifier', {
-	        ['@identifier'] = src
-	    })
+	local result = exports.oxmysql:executeSync('SELECT * FROM player_whitelists WHERE identifier = @identifier', {
+	    ['@identifier'] = src
+	})
 		
         if result[1] then
             if result[1].identifier == src then
-		        return true
-	        else
-		        return false			
-	        end
+		  return true
 	    else
-		    return false
+		  return false			
+	    end
+	else
+	    return false
         end
     end
 end
