@@ -1,20 +1,23 @@
+local function checkWhitelist(identifier)
+    local rowCount = exports.oxmysql:scalarSync('SELECT COUNT(identifier) FROM users WHERE identifier = ?;', {
+        identifier
+    })
+
+    return rowCount > 0;
+end
+
 AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
-    deferrals.defer()
+    deferrals.defer();
 
-    local playerId, kickReason, identifier = source
-	
-    deferrals.update('Please wait 5 seconds.')
-    Wait(1000)
-    deferrals.update('Please wait 4 seconds.')
-    Wait(1000)
-    deferrals.update('Please wait 3 seconds.')
-    Wait(1000)
-    deferrals.update('Please wait 2 seconds.')
-    Wait(1000)
-    deferrals.update('Please wait 1 second.')
-    Wait(1000)
+    local playerId = source;
 
-    identifier = GetPlayerIdentifiers(playerId)[1] or false
+    for i=1, 5 do
+        deferrals.update('Please wait '..i..' seconds.')
+        Wait(1000);
+    end
+
+    local identifier = GetPlayerIdentifiers(playerId)[1] or false;
+    local kickReason = nil;
 
     if not identifier then
 	    kickReason = 'Steam must be running to join this server!'
@@ -22,29 +25,5 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
 	    kickReason = 'You must be allowlisted to join this server!'
     end
 
-    if kickReason then
-	    deferrals.done(kickReason)
-    else
-	    deferrals.done()
-    end
+	deferrals.done(type(kickReason) == 'string' and kickReason or nil);
 end)
-
-function checkWhitelist(id)
-    local src = id
-
-    if id then
-	local result = exports.oxmysql:executeSync('SELECT * FROM player_whitelists WHERE identifier = @identifier', {
-	    ['@identifier'] = src
-	})
-		
-        if result[1] then
-            if result[1].identifier == src then
-		  return true
-	    else
-		  return false			
-	    end
-	else
-	    return false
-        end
-    end
-end
