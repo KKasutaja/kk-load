@@ -9,6 +9,6 @@
   * Drag 'kk-load' to your resources folder
   * Go find your server.cfg file
   * Start resources in this order
-    * start mysql-async
+    * start oxmysql
     * start kk-load
   * Start your server.
