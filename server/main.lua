@@ -1,5 +1,5 @@
 local function checkWhitelist(identifier)
-    local rowCount = exports.oxmysql:scalarSync('SELECT COUNT(identifier) FROM users WHERE identifier = ?;', {
+    local rowCount = exports.oxmysql:scalarSync('SELECT COUNT(identifier) FROM player_whitelists WHERE identifier = ?;', {
         identifier
     })
 
@@ -12,12 +12,11 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
     local playerId = source;
 
     for i=1, 5 do
-        deferrals.update('Please wait '..i..' seconds.')
+        deferrals.update('Loading on the server: '..i..'/5.')
         Wait(1000);
     end
 
-    local identifier = GetPlayerIdentifiers(playerId)[1] or false;
-    local kickReason = nil;
+    local identifier, kickReason = GetPlayerIdentifiers(playerId)[1] or false;
 
     if not identifier then
 	    kickReason = 'Steam must be running to join this server!'
@@ -25,5 +24,9 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
 	    kickReason = 'You must be allowlisted to join this server!'
     end
 
-	deferrals.done(type(kickReason) == 'string' and kickReason or nil);
+    if kickReason then
+	    deferrals.done(kickReason);
+    else
+        deferrals.done();
+    end
 end)
