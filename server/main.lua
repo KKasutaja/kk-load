@@ -1,5 +1,5 @@
 local function checkWhitelist(identifier)
-    local rowCount = MySQL.scalar.await('SELECT COUNT(identifier) FROM player_whitelists WHERE identifier = ?;', {
+    local rowCount = MySQL.Sync.fetchScalar('SELECT COUNT(identifier) FROM player_whitelists WHERE identifier = ?;', {
         identifier
     })
 
