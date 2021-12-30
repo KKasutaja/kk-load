@@ -1,13 +1,9 @@
 local function checkWhitelist(identifier)
-    local result = MySQL.Sync.fetchAll('SELECT identifier FROM player_whitelists WHERE identifier = @identifier', {
-        ['@identifier'] = identifier
+    local rowCount = MySQL.scalar.await('SELECT COUNT(identifier) FROM player_whitelists WHERE identifier = ?;', {
+        identifier
     })
 
-    if result[1] then
-        return result[1].identifier == identifier
-    else 
-        return false
-    end 
+    return rowCount > 0;
 end
 
 AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
